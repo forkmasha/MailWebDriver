@@ -11,8 +11,18 @@ public class WebDriverFactory {
 
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static void setDriver() {
-        setDriver(BrowserType.Edge);
+    private static WebDriverFactory instance;
+    private WebDriverFactory() { }
+
+    public static synchronized WebDriverFactory getInstance() {
+        if (instance == null) {
+            instance = new WebDriverFactory();
+        }
+        return instance;
+    }
+
+    public void setDriver() {
+        setDriver(BrowserType.Chrome);
     }
 
     private static void setDriver(BrowserType browser) {
@@ -32,13 +42,13 @@ public class WebDriverFactory {
         driver.set(Objects.requireNonNull(webDriver));
     }
 
-    public static WebDriver getDriver(){
+    public WebDriver getDriver(){
         return Objects.requireNonNull(driver.get());
     }
 
-    public static void closeBrowser() {
-         getDriver().close();
-         getDriver().quit();
-         driver.remove();
+    public void closeBrowser() {
+        getDriver().close();
+        getDriver().quit();
+        driver.remove();
     }
 }

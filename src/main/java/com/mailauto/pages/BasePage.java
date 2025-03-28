@@ -9,11 +9,19 @@ public abstract class BasePage {
 
     protected WebDriverWait wait;
 
+    protected void openBrowser() {
+        WebDriverFactory.getInstance().setDriver();
+    }
+
+    protected void maximazeWindow() {
+        getDriver().manage().window().maximize();
+    }
+
     protected WebDriver getDriver() {
-        return WebDriverFactory.getDriver();
+        return WebDriverFactory.getInstance().getDriver();
     }
 
     public void closeBrowser() {
-        WebDriverFactory.closeBrowser();
+        WebDriverFactory.getInstance().closeBrowser();
     }
 }

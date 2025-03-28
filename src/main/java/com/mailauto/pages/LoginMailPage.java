@@ -6,8 +6,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.mailauto.utils.WebDriverFactory;
-
 public class LoginMailPage extends BasePage {
     private static final String MAIL_LOGIN_URL = "https://www.mailinator.com/v4/login.jsp";
 
@@ -23,16 +21,16 @@ public class LoginMailPage extends BasePage {
     private WebDriverWait wait;
 
     public LoginMailPage() {
-        WebDriverFactory.setDriver();
+        openBrowser();
         this.wait = new WebDriverWait(getDriver(), 10);
         PageFactory.initElements(getDriver(), this);
     }
 
     public MainPage login(String email, String password) {
         open()
-            .enterEmail(email)
-            .enterPassword(password)
-            .submitLoginInput();
+                .enterEmail(email)
+                .enterPassword(password)
+                .submitLoginInput();
         return new MainPage();
     }
 

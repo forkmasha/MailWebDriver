@@ -18,19 +18,19 @@ import org.apache.logging.log4j.Logger;
 public class MailinatorTests extends BaseTests {
     private static final Logger logger = LogManager.getLogger(MailinatorTests.class);
 
-    private static String email = "somecompany@mail.com";
-    private static String password = "xXz9d7LZLKFgUdm";
+    private static String email = "mytestingcompany@gmail.com";
+    private static String password = "5U6N4XDtmxzUB6S";
     private MainPage mainPage;
 
     @BeforeEach
-    private void performLoginToMail(TestInfo testInfo) {
+    public void performLoginToMail(TestInfo testInfo) {
         logStartTest(testInfo);
         var loginMailPage = new LoginMailPage();
         mainPage = loginMailPage.login(email, password);
     }
 
     @AfterEach
-    private void tearDown(TestInfo testInfo) {
+    public void tearDown(TestInfo testInfo) {
         logEndTest(testInfo);
         if (mainPage != null) {
             mainPage.closeBrowser();
@@ -41,7 +41,7 @@ public class MailinatorTests extends BaseTests {
     @DisplayName("Login to mail")
     public void loginToMail() {
         var actualEmail = mainPage.getUserEmail();
-        assertEquals(email, actualEmail);  
+        assertEquals(email, actualEmail);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class MailinatorTests extends BaseTests {
         var authName = "Auth1";
         var authPage = mainPage.openAuthenticator();
         authPage.addNewAuthenticator(authName, "Description1", "123456");
-        
+
         assertTrue(authPage.is2FAAdded(authName));
         authPage.removeAuthConfig();
     }
@@ -86,5 +86,5 @@ public class MailinatorTests extends BaseTests {
 
     private void logEndTest(TestInfo testInfo) {
         logger.info(String.format("Completed %s", testInfo.getDisplayName()));
-    } 
+    }
 }

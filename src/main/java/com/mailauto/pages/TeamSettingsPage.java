@@ -1,6 +1,5 @@
 package com.mailauto.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,9 +12,14 @@ public class TeamSettingsPage extends BasePage {
     @FindBy(xpath = "//div[contains(@class, 'wrapper-primary-input')]/p")
     private WebElement teamNameLabel;
 
-    private By saveButton = By.xpath("//button[contains(text(), 'Save')]");
-    private By setNameButton = By.xpath("//button[contains(text(), 'Set Team Name')]");
-    private By teamNameInput = By.xpath("//input[@id='new-teamname-field']");
+    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Set Team Name')]")
+    private WebElement setNameButton;
+
+    @FindBy(xpath = "//input[@id='new-teamname-field']")
+    private WebElement teamNameInput;
 
     public TeamSettingsPage() {
         this.wait = new WebDriverWait(getDriver(), 20);
@@ -25,13 +29,13 @@ public class TeamSettingsPage extends BasePage {
     public TeamSettingsPage setTeamName(String teamName) {
         clickSetNameButton();
         setTeamNameInput(teamName);
-        getDriver().findElement(saveButton).click();
+        saveButton.click();
         return this;
     }
 
     private void setTeamNameInput(String teamName) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(teamNameInput));
-        getDriver().findElement(teamNameInput).sendKeys(teamName);
+        wait.until(ExpectedConditions.visibilityOf(teamNameInput));
+        teamNameInput.sendKeys(teamName);
     }
 
     private void clickSetNameButton() {
@@ -39,7 +43,7 @@ public class TeamSettingsPage extends BasePage {
         while (retries > 0) {
             try {
                 wait.until(ExpectedConditions.elementToBeClickable(setNameButton));
-                getDriver().findElement(setNameButton).click();
+                setNameButton.click();
                 return;
             } catch (StaleElementReferenceException e) {
                 retries--;
