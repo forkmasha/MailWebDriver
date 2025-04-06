@@ -18,19 +18,17 @@ public class LoginMailPage extends BasePage {
     @FindBy(xpath = "//a[@class='btn btn-default submit']")
     private WebElement loginButton;
 
-    private WebDriverWait wait;
 
     public LoginMailPage() {
         openBrowser();
-        this.wait = new WebDriverWait(getDriver(), 10);
         PageFactory.initElements(getDriver(), this);
     }
 
     public MainPage login(String email, String password) {
         open()
-                .enterEmail(email)
-                .enterPassword(password)
-                .submitLoginInput();
+            .enterEmail(email)
+            .enterPassword(password)
+            .submitLoginInput();
         return new MainPage();
     }
 
@@ -40,7 +38,7 @@ public class LoginMailPage extends BasePage {
     }
 
     private LoginMailPage enterEmail(String email) {
-        wait.until(ExpectedConditions.visibilityOf(emailInput));
+       getWaiter().until(ExpectedConditions.visibilityOf(emailInput));
         emailInput.sendKeys(email);
         return this;
     }

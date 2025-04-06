@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TeamSettingsPage extends BasePage {
 
@@ -22,7 +21,6 @@ public class TeamSettingsPage extends BasePage {
     private WebElement teamNameInput;
 
     public TeamSettingsPage() {
-        this.wait = new WebDriverWait(getDriver(), 20);
         PageFactory.initElements(getDriver(), this);
     }
 
@@ -34,7 +32,7 @@ public class TeamSettingsPage extends BasePage {
     }
 
     private void setTeamNameInput(String teamName) {
-        wait.until(ExpectedConditions.visibilityOf(teamNameInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(teamNameInput));
         teamNameInput.sendKeys(teamName);
     }
 
@@ -42,7 +40,7 @@ public class TeamSettingsPage extends BasePage {
         int retries = 3;
         while (retries > 0) {
             try {
-                wait.until(ExpectedConditions.elementToBeClickable(setNameButton));
+                getWaiter().until(ExpectedConditions.elementToBeClickable(setNameButton));
                 setNameButton.click();
                 return;
             } catch (StaleElementReferenceException e) {
@@ -53,7 +51,7 @@ public class TeamSettingsPage extends BasePage {
     }
 
     public String getTeamName() {
-        wait.until(ExpectedConditions.visibilityOf(teamNameLabel));
+        getWaiter().until(ExpectedConditions.visibilityOf(teamNameLabel));
         return teamNameLabel.getText();
     }
 }

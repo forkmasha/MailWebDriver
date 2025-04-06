@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MessageRulesPage extends BasePage {
 
@@ -32,14 +31,13 @@ public class MessageRulesPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), '+Add Rule')]")
     private WebElement confirmAddInput;
 
-    @FindBy(xpath = "//button[@data-target='#rule_dm']")
+    @FindBy(xpath = "(//button[@data-target='#rule_dm'])[2]")
     private WebElement removeRuleButton;
 
     @FindBy(xpath = "//button[@class='btn']")
     private WebElement removeRuleConfirmationButton;
 
     public MessageRulesPage() {
-        wait = new WebDriverWait(getDriver(), 10);
         PageFactory.initElements(getDriver(), this);
     }
 
@@ -54,13 +52,13 @@ public class MessageRulesPage extends BasePage {
     }
     
     private MessageRulesPage openCreateRules() {
-        wait.until(ExpectedConditions.visibilityOf(addRuleButton));
+        getWaiter().until(ExpectedConditions.visibilityOf(addRuleButton));
         addRuleButton.click();
         return this;
     }
 
     private MessageRulesPage enterRuleName(String ruleName) {
-        wait.until(ExpectedConditions.visibilityOf(ruleNameInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(ruleNameInput));
         ruleNameInput.sendKeys(ruleName);
         return this;
     }
@@ -81,7 +79,7 @@ public class MessageRulesPage extends BasePage {
     }
 
     private MessageRulesPage selectDropAction() {
-        wait.until(ExpectedConditions.visibilityOf(actionDropdown));
+        getWaiter().until(ExpectedConditions.visibilityOf(actionDropdown));
         Select select = new Select(actionDropdown);
         select.selectByVisibleText("DROP");
         return this;
@@ -89,7 +87,7 @@ public class MessageRulesPage extends BasePage {
 
     public Boolean isRuleAdded(String description){
         try {
-            wait.until(
+            getWaiter().until(
                 ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//span[contains(text(), '" + description + "')]")));
             return true;
@@ -100,14 +98,14 @@ public class MessageRulesPage extends BasePage {
 
     public MessageRulesPage removeRule() {
         removeRuleButton.click();
-        wait.until(ExpectedConditions.visibilityOf(removeRuleConfirmationButton));
+        getWaiter().until(ExpectedConditions.visibilityOf(removeRuleConfirmationButton));
         removeRuleConfirmationButton.click();
         return this;
     }
 
     private MessageRulesPage confirmAddRule() {
         scrollToElement(confirmAddInput);
-        wait.until(ExpectedConditions.elementToBeClickable(confirmAddInput));
+        getWaiter().until(ExpectedConditions.elementToBeClickable(confirmAddInput));
         confirmAddInput.click();
         return this;
     }

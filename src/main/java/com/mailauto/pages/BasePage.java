@@ -2,15 +2,16 @@ package com.mailauto.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.mailauto.utils.WebDriverFactory;
 
 public abstract class BasePage {
 
-    protected WebDriverWait wait;
+    protected WebDriverWait getWaiter() {
+        return WebDriverFactory.getWaiter();
+    }
 
     protected void openBrowser() {
-        WebDriverFactory.getInstance().setDriver();
+        WebDriverFactory.getDriver();
     }
 
     protected void maximazeWindow() {
@@ -18,10 +19,10 @@ public abstract class BasePage {
     }
 
     protected WebDriver getDriver() {
-        return WebDriverFactory.getInstance().getDriver();
+        return WebDriverFactory.getDriver();
     }
 
     public void closeBrowser() {
-        WebDriverFactory.getInstance().closeBrowser();
+        WebDriverFactory.closeBrowser();
     }
 }

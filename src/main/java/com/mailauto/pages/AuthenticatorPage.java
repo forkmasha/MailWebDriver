@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AuthenticatorPage extends BasePage {
 
@@ -34,11 +33,11 @@ public class AuthenticatorPage extends BasePage {
     private WebElement emptyAuthListLabel;
 
     public AuthenticatorPage() {
-        this.wait = new WebDriverWait(getDriver(), 10);
         PageFactory.initElements(getDriver(), this);
     }
 
-    public AuthenticatorPage addNewAuthenticator(String name, String description, String code) {
+    public AuthenticatorPage addNewAuthenticator(String name, String description, String code) { 
+        maximazeWindow();
         return openAdd2FA()
             .enterName(name)
             .enterDescription(description)
@@ -47,39 +46,38 @@ public class AuthenticatorPage extends BasePage {
     }
 
     private AuthenticatorPage openAdd2FA() {
-        wait.until(ExpectedConditions.visibilityOf(add2FAButton));
+        getWaiter().until(ExpectedConditions.visibilityOf(add2FAButton));
         add2FAButton.click();
         return this;
     }
 
     private AuthenticatorPage enterName(String name) {
-        wait.until(ExpectedConditions.visibilityOf(nameInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(nameInput));
         nameInput.sendKeys(name);
         return this;
     }
 
     private AuthenticatorPage enterDescription(String description) {
-        wait.until(ExpectedConditions.visibilityOf(descriptionInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(descriptionInput));
         descriptionInput.sendKeys(description);
         return this;
     }
 
     private AuthenticatorPage enterCode(String code) {
-        wait.until(ExpectedConditions.visibilityOf(codeInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(codeInput));
         codeInput.sendKeys(code);
         return this;
     }
 
     private AuthenticatorPage confirmAdd() {
-        wait.until(ExpectedConditions.visibilityOf(confirmAddInput));
+        getWaiter().until(ExpectedConditions.visibilityOf(confirmAddInput));
         confirmAddInput.click();
         return this;
     }
 
     public Boolean is2FAAdded(String name){
-        getDriver().manage().window().maximize();
         try {
-            wait.until(
+            getWaiter().until(
                 ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//td[contains(text(), '" + name + "')]")));
             return true;
@@ -89,13 +87,13 @@ public class AuthenticatorPage extends BasePage {
     }
 
     public AuthenticatorPage removeAuthConfig() {
-        wait.until(ExpectedConditions.visibilityOf(removeAuthButton));
+        getWaiter().until(ExpectedConditions.visibilityOf(removeAuthButton));
         removeAuthButton.click();
 
-        wait.until(ExpectedConditions.visibilityOf(removeAuthConfirmationButton));
+        getWaiter().until(ExpectedConditions.visibilityOf(removeAuthConfirmationButton));
         removeAuthConfirmationButton.click();
         
-        wait.until(ExpectedConditions.visibilityOf(emptyAuthListLabel));
+        getWaiter().until(ExpectedConditions.visibilityOf(emptyAuthListLabel));
         return this;
     }
 }

@@ -4,7 +4,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage extends BasePage {
 
@@ -24,7 +23,6 @@ public class MainPage extends BasePage {
     private WebElement teamSettingsLink;
 
     public MainPage() {
-        wait = new WebDriverWait(getDriver(), 10);
         PageFactory.initElements(getDriver(), this);
     }
 
@@ -33,24 +31,24 @@ public class MainPage extends BasePage {
     }
 
     public String getUserEmail() {
-        wait.until(ExpectedConditions.visibilityOf(userEmail));
+        getWaiter().until(ExpectedConditions.visibilityOf(userEmail));
         return userEmail.getText();
     }
 
     public MessageRulesPage openMessageRules() {
-        wait.until(ExpectedConditions.visibilityOf(messageRulesLink));
+        getWaiter().until(ExpectedConditions.visibilityOf(messageRulesLink));
         messageRulesLink.click();
         return new MessageRulesPage();
     }
 
     public AuthenticatorPage openAuthenticator() {
-        wait.until(ExpectedConditions.visibilityOf(authenticatorLink));
+        getWaiter().until(ExpectedConditions.visibilityOf(authenticatorLink));
         authenticatorLink.click();
         return new AuthenticatorPage();
     }
 
     public TeamSettingsPage openTeamSettings() {
-        wait.until(ExpectedConditions.visibilityOf(teamSettingsLink));
+        getWaiter().until(ExpectedConditions.visibilityOf(teamSettingsLink));
         teamSettingsLink.click();
         return new TeamSettingsPage();
     }

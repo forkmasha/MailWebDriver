@@ -3,6 +3,7 @@ package com.mailauto.utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Objects;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -10,45 +11,51 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class WebDriverFactory {
 
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriverWait> waiter = new ThreadLocal<>();
 
-    private static WebDriverFactory instance;
-    private WebDriverFactory() { }
+    public static WebDriver getDriver() {
+        return getDriver(getBrowserType());
+    }
 
-    public static synchronized WebDriverFactory getInstance() {
-        if (instance == null) {
-            instance = new WebDriverFactory();
+    public static WebDriver getDriver(BrowserType browser) {
+        if (driver.get() == null) {
+            WebDriver webDriver;
+            switch (browser) {
+                case CHROME:
+                    WebDriverManager.chromedriver().setup();
+                    webDriver = new ChromeDriver();
+                    break;
+                case EDGE:
+                    WebDriverManager.edgedriver().setup();
+                    webDriver = new EdgeDriver();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + browser);
+            }
+            driver.set(Objects.requireNonNull(webDriver));
         }
-        return instance;
+        return driver.get();
     }
 
-    public void setDriver() {
-        setDriver(BrowserType.Chrome);
-    }
-
-    private static void setDriver(BrowserType browser) {
-        WebDriver webDriver;
-        switch (browser) {
-            case Chrome:
-                WebDriverManager.chromedriver().setup();
-                webDriver = new ChromeDriver();
-                break;
-            case Edge:
-                WebDriverManager.edgedriver().setup();
-                webDriver = new EdgeDriver();
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + browser);
+    public static WebDriverWait getWaiter() {
+        if (waiter.get() == null) {
+            waiter.set(new WebDriverWait(getDriver(), 10));
         }
-        driver.set(Objects.requireNonNull(webDriver));
+        return waiter.get();
     }
 
-    public WebDriver getDriver(){
-        return Objects.requireNonNull(driver.get());
+    public static void closeBrowser() {
+        if (driver.get() != null) {
+            getDriver().close();
+            getDriver().quit();
+            driver.remove();
+            waiter.remove();
+        }
     }
 
-    public void closeBrowser() {
-        getDriver().close();
-        getDriver().quit();
-        driver.remove();
+    private static BrowserType getBrowserType() {
+        String browser = System.getProperty("browser", "CHROME");
+        BrowserType browserType = BrowserType.valueOf(browser.toUpperCase());
+        return browserType;
     }
 }

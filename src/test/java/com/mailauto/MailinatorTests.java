@@ -41,15 +41,15 @@ public class MailinatorTests extends BaseTests {
     @DisplayName("Login to mail")
     public void loginToMail() {
         var actualEmail = mainPage.getUserEmail();
-        assertEquals(email, actualEmail);
+        assertEquals(email, actualEmail);  
     }
 
     @Test
     @DisplayName("Add new message rule")
     public void createMailRule() {
-        var expectedDesc = "Description 1";
+        var expectedDesc = "DescriptionTest";
         var messageRulesPage = mainPage.openMessageRules();
-        messageRulesPage.addNewMessageRule("Rule1", expectedDesc, "1", "Condition1");
+        messageRulesPage.addNewMessageRule("RuleTest", expectedDesc, "1", "Condition1");
 
         assertTrue(messageRulesPage.isRuleAdded(expectedDesc));
         messageRulesPage.removeRule();
@@ -61,7 +61,7 @@ public class MailinatorTests extends BaseTests {
         var authName = "Auth1";
         var authPage = mainPage.openAuthenticator();
         authPage.addNewAuthenticator(authName, "Description1", "123456");
-
+        
         assertTrue(authPage.is2FAAdded(authName));
         authPage.removeAuthConfig();
     }
@@ -86,5 +86,5 @@ public class MailinatorTests extends BaseTests {
 
     private void logEndTest(TestInfo testInfo) {
         logger.info(String.format("Completed %s", testInfo.getDisplayName()));
-    }
+    } 
 }
